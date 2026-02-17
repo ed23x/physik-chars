@@ -238,56 +238,6 @@ function HomeContent() {
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden flex items-center gap-2 mb-4 px-3 py-2 rounded-md bg-secondary text-sm font-medium hover:bg-secondary/80 transition-colors"
-          aria-label="Kategorien öffnen"
-        >
-          {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          Kategorien
-        </button>
-
-        {mobileMenuOpen && (
-          <div className="lg:hidden mb-6 p-4 rounded-lg border border-border bg-card">
-            {recentSymbols.length > 0 && !search && (
-              <div className="mb-4">
-                <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  <Clock className="h-3 w-3" />
-                  Zuletzt verwendet
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {recentSymbols.slice(0, 8).map((symbol) => (
-                    <button
-                      key={symbol.char}
-                      onClick={() => {
-                        navigator.clipboard.writeText(symbol.char)
-                        updateRecent(symbol)
-                      }}
-                      className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-1 text-sm hover:bg-secondary/80 transition-colors"
-                      title={symbol.name}
-                    >
-                      <code className="text-primary">{symbol.char}</code>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-            <div>
-              <div className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Kategorien
-              </div>
-              <CategoryNav
-                categories={filtered}
-                activeId={activeCategory}
-                onSelect={(id) => {
-                  handleCategorySelect(id)
-                  setMobileMenuOpen(false)
-                }}
-              />
-            </div>
-          </div>
-        )}
-
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
           <aside className="hidden lg:sticky lg:top-4 lg:flex lg:flex-col gap-6 lg:w-48 self-start max-h-[calc(100vh-2rem)] overflow-y-auto">
             {recentSymbols.length > 0 && !search && (
@@ -353,6 +303,63 @@ function HomeContent() {
           </main>
         </div>
       </div>
+
+      <button
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 flex h-10 w-10 items-center justify-center rounded-lg bg-card border border-border shadow-lg hover:bg-secondary transition-colors"
+        aria-label="Kategorien öffnen"
+      >
+        {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      </button>
+
+      {mobileMenuOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 z-40 bg-black/50" 
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div 
+            className="absolute top-16 left-4 w-72 max-h-[calc(100vh-5rem)] overflow-y-auto p-4 rounded-lg border border-border bg-card shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {recentSymbols.length > 0 && !search && (
+              <div className="mb-4">
+                <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <Clock className="h-3 w-3" />
+                  Zuletzt verwendet
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  {recentSymbols.slice(0, 8).map((symbol) => (
+                    <button
+                      key={symbol.char}
+                      onClick={() => {
+                        navigator.clipboard.writeText(symbol.char)
+                        updateRecent(symbol)
+                      }}
+                      className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-1 text-sm hover:bg-secondary/80 transition-colors"
+                      title={symbol.name}
+                    >
+                      <code className="text-primary">{symbol.char}</code>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div>
+              <div className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Kategorien
+              </div>
+              <CategoryNav
+                categories={filtered}
+                activeId={activeCategory}
+                onSelect={(id) => {
+                  handleCategorySelect(id)
+                  setMobileMenuOpen(false)
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="border-t border-border">
         <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
