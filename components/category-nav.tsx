@@ -11,23 +11,21 @@ interface CategoryNavProps {
 
 export function CategoryNav({ categories, activeId, onSelect }: CategoryNavProps) {
   return (
-    <nav aria-label="Kategorien" className="flex flex-wrap gap-2 lg:flex-col lg:gap-1">
+    <nav aria-label="Kategorien" className="flex flex-col gap-1">
       {categories.map((cat, index) => (
         <button
           key={cat.id}
           onClick={() => onSelect(cat.id)}
           className={cn(
-            "flex w-full items-center justify-between gap-2 rounded-md px-3 py-1.5 text-left text-sm transition-colors",
+            "flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors",
             activeId === cat.id
               ? "bg-primary/10 font-medium text-primary"
               : "text-muted-foreground hover:bg-secondary hover:text-card-foreground"
           )}
         >
-          <span className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground/60 w-3">{index + 1}</span>
-            <span className="truncate">{cat.title}</span>
-          </span>
-          <span className="text-xs text-muted-foreground/60 shrink-0">
+          <span className="shrink-0 text-xs text-muted-foreground/60 w-4">{index + 1}</span>
+          <span className="flex-1 truncate">{cat.title}</span>
+          <span className="shrink-0 text-xs text-muted-foreground/60">
             {cat.symbols.length}
           </span>
         </button>

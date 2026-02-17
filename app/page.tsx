@@ -201,9 +201,9 @@ function HomeContent() {
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
-          <aside className="shrink-0 lg:w-56 lg:self-start">
+          <aside className="flex flex-col gap-6 lg:w-48 lg:self-start overflow-hidden">
             {recentSymbols.length > 0 && !search && (
-              <div className="mb-8">
+              <div>
                 <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   <Clock className="h-3 w-3" />
                   Zuletzt verwendet
@@ -226,14 +226,16 @@ function HomeContent() {
               </div>
             )}
             
-            <div className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Kategorien
+            <div>
+              <div className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Kategorien
+              </div>
+              <CategoryNav
+                categories={filtered}
+                activeId={activeCategory}
+                onSelect={handleCategorySelect}
+              />
             </div>
-            <CategoryNav
-              categories={filtered}
-              activeId={activeCategory}
-              onSelect={handleCategorySelect}
-            />
           </aside>
 
           <main className="min-w-0 flex-1">
