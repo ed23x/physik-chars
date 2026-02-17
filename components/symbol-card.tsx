@@ -161,7 +161,7 @@ export function SymbolCard({ symbol, onCopy, onRelatedClick, allSymbols = [], is
           <div className="flex flex-wrap gap-1">
             {relatedSymbols.map((rel) => (
               <button
-                key={rel.char}
+                key={rel.char + rel.name}
                 onClick={() => onRelatedClick?.(rel.char)}
                 className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs hover:bg-secondary/80 transition-colors"
               >
