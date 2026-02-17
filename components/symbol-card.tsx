@@ -33,9 +33,10 @@ interface SymbolCardProps {
   onCopy?: (symbol: PhysicsSymbol) => void
   onRelatedClick?: (char: string) => void
   allSymbols?: PhysicsSymbol[]
+  isFocused?: boolean
 }
 
-export function SymbolCard({ symbol, onCopy, onRelatedClick, allSymbols = [] }: SymbolCardProps) {
+export function SymbolCard({ symbol, onCopy, onRelatedClick, allSymbols = [], isFocused = false }: SymbolCardProps) {
   const [copied, setCopied] = useState<string | null>(null)
   const [showFormats, setShowFormats] = useState(false)
 
@@ -68,32 +69,39 @@ export function SymbolCard({ symbol, onCopy, onRelatedClick, allSymbols = [] }: 
   const formats: CopyFormat[] = ["unicode", "latex", "html", "escape"]
 
   return (
-    <div className="group rounded-lg border border-border bg-card transition-colors hover:border-primary/40">
+    <div 
+      className={`group rounded-lg border bg-card transition-all ${
+        isFocused 
+          ? "border-primary ring-2 ring-primary/30 ring-offset-2 ring-offset-background scale-[1.02]" 
+          : "border-border hover:border-primary/40"
+      }`}
+      aria-current={isFocused ? "true" : undefined}
+    >
       <button
         onClick={() => copyToClipboard("unicode")}
-        className="flex w-full items-center gap-4 px-4 py-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="flex w-full items-center gap-3 px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:gap-4 sm:px-4 sm:py-3"
         aria-label={`${symbol.char} kopieren - ${symbol.name}`}
         title={`${symbol.name} kopieren`}
       >
-        <code className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-secondary font-mono text-2xl text-primary transition-colors group-hover:bg-primary/10">
+        <code className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-secondary font-mono text-xl text-primary transition-colors group-hover:bg-primary/10 sm:h-12 sm:w-12 sm:text-2xl">
           {symbol.char}
         </code>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-card-foreground">
+          <p className="truncate text-xs font-medium text-card-foreground sm:text-sm">
             {symbol.name}
           </p>
           {symbol.latex && (
-            <p className="truncate font-mono text-xs text-muted-foreground">
+            <p className="truncate font-mono text-[10px] text-muted-foreground sm:text-xs">
               {symbol.latex}
             </p>
           )}
         </div>
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-all">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-all sm:h-8 sm:w-8">
           {copied ? (
-            <Check className="h-4 w-4 text-success" aria-hidden="true" />
+            <Check className="h-3.5 w-3.5 text-success sm:h-4 sm:w-4" aria-hidden="true" />
           ) : (
             <Copy
-              className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100"
+              className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100 sm:h-4 sm:w-4"
               aria-hidden="true"
             />
           )}
@@ -105,14 +113,14 @@ export function SymbolCard({ symbol, onCopy, onRelatedClick, allSymbols = [] }: 
 
       <button
         onClick={() => setShowFormats(!showFormats)}
-        className="flex w-full items-center justify-between px-4 py-1.5 text-xs text-muted-foreground hover:text-card-foreground transition-colors"
+        className="hidden w-full items-center justify-between px-4 py-1.5 text-xs text-muted-foreground hover:text-card-foreground transition-colors sm:flex"
       >
         <span>Formate anzeigen</span>
         <ChevronDown className={`h-3 w-3 transition-transform ${showFormats ? "rotate-180" : ""}`} />
       </button>
 
       {showFormats && (
-        <div className="grid grid-cols-4 gap-1 px-4 pb-3">
+        <div className="grid grid-cols-4 gap-1 px-3 pb-2 sm:px-4 sm:pb-3">
           {formats.map((format) => {
             const value = getFormattedValue(symbol, format)
             const hasFormat = format === "unicode" || 
@@ -124,14 +132,14 @@ export function SymbolCard({ symbol, onCopy, onRelatedClick, allSymbols = [] }: 
               <button
                 key={format}
                 onClick={() => copyToClipboard(format)}
-                className="flex flex-col items-center gap-1 rounded-md bg-secondary/50 px-2 py-1.5 text-xs hover:bg-secondary transition-colors"
+                className="flex flex-col items-center gap-0.5 rounded-md bg-secondary/50 px-1.5 py-1 text-[10px] hover:bg-secondary transition-colors sm:gap-1 sm:px-2 sm:py-1.5 sm:text-xs"
               >
                 <span className="text-muted-foreground">{formatLabels[format]}</span>
-                <code className="text-[10px] text-card-foreground truncate max-w-full">
+                <code className="text-card-foreground truncate max-w-full">
                   {value}
                 </code>
                 {copied === format && (
-                  <Check className="h-3 w-3 text-success" />
+                  <Check className="h-2.5 w-2.5 text-success sm:h-3 sm:w-3" />
                 )}
               </button>
             )
@@ -140,7 +148,7 @@ export function SymbolCard({ symbol, onCopy, onRelatedClick, allSymbols = [] }: 
       )}
 
       {symbol.beschreibung && (
-        <div className="border-t border-border px-4 py-2">
+        <div className="hidden border-t border-border px-4 py-2 sm:block">
           <p className="text-xs leading-relaxed text-muted-foreground">
             {symbol.beschreibung}
           </p>
@@ -148,7 +156,7 @@ export function SymbolCard({ symbol, onCopy, onRelatedClick, allSymbols = [] }: 
       )}
 
       {relatedSymbols.length > 0 && (
-        <div className="border-t border-border px-4 py-2">
+        <div className="hidden border-t border-border px-4 py-2 sm:block">
           <p className="text-xs text-muted-foreground mb-2">Verwandte Symbole:</p>
           <div className="flex flex-wrap gap-1">
             {relatedSymbols.map((rel) => (

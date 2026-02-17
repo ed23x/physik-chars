@@ -11,7 +11,9 @@ Die Anwendung ist als Web-App nutzbar und kann auch als PWA installiert werden. 
 | Taste | Funktion |
 |-------|----------|
 | `/` | Suchfeld fokussieren |
-| `1-7` | Zu Kategorie springen |
+| `↓` / `↑` | Zwischen Symbolen navigieren |
+| `Enter` | Fokussiertes Symbol kopieren |
+| `1-9` | Zu Kategorie springen |
 | `Esc` | Suche leeren / Schliessen |
 | `?` | Hilfe anzeigen |
 

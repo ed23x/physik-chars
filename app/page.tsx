@@ -9,6 +9,7 @@ import { SearchBar } from "@/components/search-bar"
 import { CategoryNav } from "@/components/category-nav"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { KeyboardHelp } from "@/components/keyboard-help"
+import { OfflineIndicator } from "@/components/offline-indicator"
 import { Atom, Clock, Keyboard } from "lucide-react"
 
 const RECENT_KEY = "phyik-recent"
@@ -23,6 +24,7 @@ function HomeContent() {
   const [activeCategory, setActiveCategory] = useState(categories[0].id)
   const [recentSymbols, setRecentSymbols] = useState<PhysicsSymbol[]>([])
   const [showHelp, setShowHelp] = useState(false)
+  const [focusIndex, setFocusIndex] = useState(-1)
 
   const allSymbols = useMemo(() => 
     categories.flatMap(cat => cat.symbols),
@@ -72,6 +74,11 @@ function HomeContent() {
 
   const totalResults = useMemo(
     () => filtered.reduce((sum, cat) => sum + cat.symbols.length, 0),
+    [filtered]
+  )
+
+  const flatSymbols = useMemo(
+    () => filtered.flatMap(cat => cat.symbols),
     [filtered]
   )
 
@@ -127,6 +134,7 @@ function HomeContent() {
       if (e.key === "/") {
         e.preventDefault()
         searchInputRef.current?.focus()
+        setFocusIndex(-1)
         return
       }
 
@@ -139,19 +147,47 @@ function HomeContent() {
       if (e.key === "Escape") {
         setShowHelp(false)
         setSearch("")
+        setFocusIndex(-1)
         router.replace("?", { scroll: false })
         return
       }
 
+      if (e.key === "ArrowDown") {
+        e.preventDefault()
+        setFocusIndex(prev => {
+          const next = prev + 1
+          return next >= flatSymbols.length ? 0 : next
+        })
+        return
+      }
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault()
+        setFocusIndex(prev => {
+          if (prev <= 0) return flatSymbols.length - 1
+          return prev - 1
+        })
+        return
+      }
+
+      if (e.key === "Enter" && focusIndex >= 0 && focusIndex < flatSymbols.length) {
+        e.preventDefault()
+        const symbol = flatSymbols[focusIndex]
+        navigator.clipboard.writeText(symbol.char)
+        updateRecent(symbol)
+        return
+      }
+
       const num = parseInt(e.key)
-      if (num >= 1 && num <= categories.length) {
+      if (num >= 1 && num <= 9 && num <= categories.length) {
         handleCategorySelect(categories[num - 1].id)
+        setFocusIndex(-1)
       }
     }
 
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [handleCategorySelect, router])
+  }, [handleCategorySelect, router, flatSymbols, focusIndex, updateRecent])
 
   return (
     <div className="min-h-screen bg-background">
@@ -180,6 +216,7 @@ function HomeContent() {
                 <Keyboard className="h-4 w-4" />
               </button>
               <ThemeToggle />
+              <OfflineIndicator />
             </div>
           </div>
           <div className="mt-6 max-w-md">
@@ -257,6 +294,7 @@ function HomeContent() {
                     allSymbols={allSymbols}
                     onSymbolCopy={updateRecent}
                     onRelatedClick={handleRelatedClick}
+                    focusedSymbol={focusIndex >= 0 && focusIndex < flatSymbols.length ? flatSymbols[focusIndex] : null}
                   />
                 ))
               )}

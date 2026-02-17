@@ -1,14 +1,18 @@
 import type { PhysicsSymbol, SymbolCategory } from "@/lib/symbols"
 import { SymbolCard } from "@/components/symbol-card"
+import { FormulaCard } from "@/components/formula-card"
 
 interface CategorySectionProps {
   category: SymbolCategory
   allSymbols: PhysicsSymbol[]
   onSymbolCopy?: (symbol: PhysicsSymbol) => void
   onRelatedClick?: (char: string) => void
+  focusedSymbol: PhysicsSymbol | null
 }
 
-export function CategorySection({ category, allSymbols, onSymbolCopy, onRelatedClick }: CategorySectionProps) {
+export function CategorySection({ category, allSymbols, onSymbolCopy, onRelatedClick, focusedSymbol }: CategorySectionProps) {
+  const isFormulaCategory = category.id === "formeln"
+
   return (
     <section id={category.id} aria-labelledby={`heading-${category.id}`}>
       <div className="mb-4">
@@ -22,15 +26,25 @@ export function CategorySection({ category, allSymbols, onSymbolCopy, onRelatedC
           {category.description}
         </p>
       </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className={isFormulaCategory ? "grid grid-cols-2 gap-3" : "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"}>
         {category.symbols.map((symbol) => (
-          <SymbolCard 
-            key={symbol.char + symbol.name} 
-            symbol={symbol} 
-            allSymbols={allSymbols}
-            onCopy={onSymbolCopy}
-            onRelatedClick={onRelatedClick}
-          />
+          isFormulaCategory ? (
+            <FormulaCard
+              key={symbol.char + symbol.name}
+              symbol={symbol}
+              onCopy={onSymbolCopy}
+              isFocused={focusedSymbol?.char === symbol.char && focusedSymbol?.name === symbol.name}
+            />
+          ) : (
+            <SymbolCard 
+              key={symbol.char + symbol.name} 
+              symbol={symbol} 
+              allSymbols={allSymbols}
+              onCopy={onSymbolCopy}
+              onRelatedClick={onRelatedClick}
+              isFocused={focusedSymbol?.char === symbol.char && focusedSymbol?.name === symbol.name}
+            />
+          )
         ))}
       </div>
     </section>
