@@ -200,10 +200,10 @@ function HomeContent() {
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div className="flex flex-col gap-8 lg:flex-row">
-          <aside className="shrink-0 lg:sticky lg:top-8 lg:w-52 lg:self-start">
+        <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
+          <aside className="shrink-0 lg:w-56 lg:self-start">
             {recentSymbols.length > 0 && !search && (
-              <div className="mb-6">
+              <div className="mb-8">
                 <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   <Clock className="h-3 w-3" />
                   Zuletzt verwendet
@@ -226,9 +226,9 @@ function HomeContent() {
               </div>
             )}
             
-            <p className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <div className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Kategorien
-            </p>
+            </div>
             <CategoryNav
               categories={filtered}
               activeId={activeCategory}
