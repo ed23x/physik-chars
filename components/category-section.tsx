@@ -1,7 +1,14 @@
-import type { SymbolCategory } from "@/lib/symbols"
+import type { PhysicsSymbol, SymbolCategory } from "@/lib/symbols"
 import { SymbolCard } from "@/components/symbol-card"
 
-export function CategorySection({ category }: { category: SymbolCategory }) {
+interface CategorySectionProps {
+  category: SymbolCategory
+  allSymbols: PhysicsSymbol[]
+  onSymbolCopy?: (symbol: PhysicsSymbol) => void
+  onRelatedClick?: (char: string) => void
+}
+
+export function CategorySection({ category, allSymbols, onSymbolCopy, onRelatedClick }: CategorySectionProps) {
   return (
     <section id={category.id} aria-labelledby={`heading-${category.id}`}>
       <div className="mb-4">
@@ -17,7 +24,13 @@ export function CategorySection({ category }: { category: SymbolCategory }) {
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {category.symbols.map((symbol) => (
-          <SymbolCard key={symbol.char + symbol.name} symbol={symbol} />
+          <SymbolCard 
+            key={symbol.char + symbol.name} 
+            symbol={symbol} 
+            allSymbols={allSymbols}
+            onCopy={onSymbolCopy}
+            onRelatedClick={onRelatedClick}
+          />
         ))}
       </div>
     </section>
