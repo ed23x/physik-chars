@@ -10,7 +10,7 @@ import { CategoryNav } from "@/components/category-nav"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { KeyboardHelp } from "@/components/keyboard-help"
 import { OfflineIndicator } from "@/components/offline-indicator"
-import { Atom, Clock, Keyboard } from "lucide-react"
+import { Atom, Clock, Keyboard, Menu, X } from "lucide-react"
 
 const RECENT_KEY = "phyik-recent"
 const MAX_RECENT = 12
@@ -25,6 +25,7 @@ function HomeContent() {
   const [recentSymbols, setRecentSymbols] = useState<PhysicsSymbol[]>([])
   const [showHelp, setShowHelp] = useState(false)
   const [focusIndex, setFocusIndex] = useState(-1)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const allSymbols = useMemo(() => 
     categories.flatMap(cat => cat.symbols),
@@ -237,8 +238,58 @@ function HomeContent() {
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden flex items-center gap-2 mb-4 px-3 py-2 rounded-md bg-secondary text-sm font-medium hover:bg-secondary/80 transition-colors"
+          aria-label="Kategorien öffnen"
+        >
+          {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          Kategorien
+        </button>
+
+        {mobileMenuOpen && (
+          <div className="lg:hidden mb-6 p-4 rounded-lg border border-border bg-card">
+            {recentSymbols.length > 0 && !search && (
+              <div className="mb-4">
+                <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <Clock className="h-3 w-3" />
+                  Zuletzt verwendet
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  {recentSymbols.slice(0, 8).map((symbol) => (
+                    <button
+                      key={symbol.char}
+                      onClick={() => {
+                        navigator.clipboard.writeText(symbol.char)
+                        updateRecent(symbol)
+                      }}
+                      className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-1 text-sm hover:bg-secondary/80 transition-colors"
+                      title={symbol.name}
+                    >
+                      <code className="text-primary">{symbol.char}</code>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div>
+              <div className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Kategorien
+              </div>
+              <CategoryNav
+                categories={filtered}
+                activeId={activeCategory}
+                onSelect={(id) => {
+                  handleCategorySelect(id)
+                  setMobileMenuOpen(false)
+                }}
+              />
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
-          <aside className="sticky top-4 flex flex-col gap-6 lg:w-48 self-start max-h-[calc(100vh-2rem)] overflow-y-auto">
+          <aside className="hidden lg:sticky lg:top-4 lg:flex lg:flex-col gap-6 lg:w-48 self-start max-h-[calc(100vh-2rem)] overflow-y-auto">
             {recentSymbols.length > 0 && !search && (
               <div>
                 <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
