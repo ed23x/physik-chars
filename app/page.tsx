@@ -238,7 +238,7 @@ function HomeContent() {
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
-          <aside className="flex flex-col gap-6 lg:w-48 lg:self-start overflow-hidden">
+          <aside className="sticky top-4 flex flex-col gap-6 lg:w-48 self-start max-h-[calc(100vh-2rem)] overflow-y-auto">
             {recentSymbols.length > 0 && !search && (
               <div>
                 <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
