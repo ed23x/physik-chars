@@ -9,7 +9,9 @@ interface KeyboardHelpProps {
 
 const shortcuts = [
   { keys: ["/"], description: "Suchfeld fokussieren" },
-  { keys: ["1", "-", "7"], description: "Zu Kategorie springen" },
+  { keys: ["↓", "↑"], description: "Zwischen Symbolen navigieren" },
+  { keys: ["Enter"], description: "Fokussiertes Symbol kopieren" },
+  { keys: ["1", "-", "9"], description: "Zu Kategorie springen" },
   { keys: ["Esc"], description: "Suche leeren / Schliessen" },
   { keys: ["?"], description: "Hilfe anzeigen/ausblenden" },
 ]
