@@ -64,7 +64,7 @@ export default function Home() {
                 Physik Sonderzeichen
               </h1>
               <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-                Symbole antippen zum Kopieren. Mit Erklaerungen auf Deutsch.
+                Symbole antippen zum Kopieren
               </p>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function Home() {
               {filtered.length === 0 ? (
                 <div className="py-16 text-center">
                   <p className="text-lg text-muted-foreground">
-                    Keine Ergebnisse fuer &ldquo;{search}&rdquo;
+                    Keine Ergebnisse für &ldquo;{search}&rdquo;
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     Versuche einen anderen Suchbegriff.

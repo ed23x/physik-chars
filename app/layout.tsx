@@ -9,7 +9,6 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jet
 export const metadata: Metadata = {
   title: 'Physik Sonderzeichen - Symbole zum Kopieren',
   description: 'Umfassende Sammlung physikalischer Sonderzeichen und Symbole. Griechische Buchstaben, mathematische Operatoren und mehr - einfach antippen und kopieren.',
-  generator: 'v0.app',
   icons: {
     icon: [
       {
