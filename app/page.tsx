@@ -306,7 +306,7 @@ function HomeContent() {
 
       <button
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 flex h-10 w-10 items-center justify-center rounded-lg bg-card border border-border shadow-lg hover:bg-secondary transition-colors"
+        className="lg:hidden fixed top-4 right-4 z-50 flex h-10 w-10 items-center justify-center rounded-lg bg-card border border-border shadow-lg hover:bg-secondary transition-colors"
         aria-label="Kategorien öffnen"
       >
         {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -318,7 +318,7 @@ function HomeContent() {
           onClick={() => setMobileMenuOpen(false)}
         >
           <div 
-            className="absolute top-16 left-4 w-72 max-h-[calc(100vh-5rem)] overflow-y-auto p-4 rounded-lg border border-border bg-card shadow-xl"
+            className="absolute top-16 right-4 w-72 max-h-[calc(100vh-5rem)] overflow-y-auto p-4 rounded-lg border border-border bg-card shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             {recentSymbols.length > 0 && !search && (
